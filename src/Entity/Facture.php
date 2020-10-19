@@ -43,6 +43,18 @@ class Facture
      */
     private $montantFact;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Periode::class, inversedBy="factures")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $periodeId;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Compteur::class, inversedBy="factures")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $compteurId;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -104,6 +116,30 @@ class Facture
     public function setMontantFact(string $montantFact): self
     {
         $this->montantFact = $montantFact;
+
+        return $this;
+    }
+
+    public function getPeriodeId(): ?Periode
+    {
+        return $this->periodeId;
+    }
+
+    public function setPeriodeId(?Periode $periodeId): self
+    {
+        $this->periodeId = $periodeId;
+
+        return $this;
+    }
+
+    public function getCompteurId(): ?Compteur
+    {
+        return $this->compteurId;
+    }
+
+    public function setCompteurId(?Compteur $compteurId): self
+    {
+        $this->compteurId = $compteurId;
 
         return $this;
     }

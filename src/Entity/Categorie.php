@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\CategorieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CategorieRepository::class)
  */
-class Categorie  //Particulier-Entreprise-Menage
+class Categorie  //01-Particulier-02-Entreprise-03 Administration
 {
     /**
      * @ORM\Id
@@ -26,6 +28,16 @@ class Categorie  //Particulier-Entreprise-Menage
      * @ORM\Column(type="string", length=255)
      */
     private $libelle;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Abonne::class, mappedBy="categorie")
+     */
+    private $abonnes;
+
+    public function __construct()
+    {
+        $this->abonnes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -52,6 +64,37 @@ class Categorie  //Particulier-Entreprise-Menage
     public function setLibelle(string $libelle): self
     {
         $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Abonne[]
+     */
+    public function getAbonnes(): Collection
+    {
+        return $this->abonnes;
+    }
+
+    public function addAbonne(Abonne $abonne): self
+    {
+        if (!$this->abonnes->contains($abonne)) {
+            $this->abonnes[] = $abonne;
+            $abonne->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAbonne(Abonne $abonne): self
+    {
+        if ($this->abonnes->contains($abonne)) {
+            $this->abonnes->removeElement($abonne);
+            // set the owning side to null (unless already changed)
+            if ($abonne->getCategorie() === $this) {
+                $abonne->setCategorie(null);
+            }
+        }
 
         return $this;
     }

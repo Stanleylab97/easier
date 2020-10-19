@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AgenceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,16 @@ class Agence
      * @ORM\Column(type="float")
      */
     private $lon;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Bordereau::class, mappedBy="agenceId")
+     */
+    private $bordereaux;
+
+    public function __construct()
+    {
+        $this->bordereaux = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +81,37 @@ class Agence
     public function setLon(float $lon): self
     {
         $this->lon = $lon;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Bordereau[]
+     */
+    public function getBordereaux(): Collection
+    {
+        return $this->bordereaux;
+    }
+
+    public function addBordereaux(Bordereau $bordereaux): self
+    {
+        if (!$this->bordereaux->contains($bordereaux)) {
+            $this->bordereaux[] = $bordereaux;
+            $bordereaux->setAgenceId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBordereaux(Bordereau $bordereaux): self
+    {
+        if ($this->bordereaux->contains($bordereaux)) {
+            $this->bordereaux->removeElement($bordereaux);
+            // set the owning side to null (unless already changed)
+            if ($bordereaux->getAgenceId() === $this) {
+                $bordereaux->setAgenceId(null);
+            }
+        }
 
         return $this;
     }
