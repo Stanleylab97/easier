@@ -38,7 +38,7 @@ class Bordereau
      * @ORM\ManyToOne(targetEntity=Agence::class, inversedBy="bordereaux")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $agenceId;
+    private $agence;
 
     public function __construct()
     {
@@ -105,14 +105,14 @@ class Bordereau
         return $this;
     }
 
-    public function getAgenceId(): ?Agence
+    public function getAgence(): ?Agence
     {
-        return $this->agenceId;
+        return $this->agence;
     }
 
-    public function setAgenceId(?Agence $agenceId): self
+    public function setAgence(?Agence $agence): self
     {
-        $this->agenceId = $agenceId;
+        $this->agence = $agence;
 
         return $this;
     }

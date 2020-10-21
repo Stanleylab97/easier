@@ -114,7 +114,7 @@ class Periode
     {
         if (!$this->factures->contains($facture)) {
             $this->factures[] = $facture;
-            $facture->setPeriodeId($this);
+            $facture->setPeriode($this);
         }
 
         return $this;
@@ -125,8 +125,8 @@ class Periode
         if ($this->factures->contains($facture)) {
             $this->factures->removeElement($facture);
             // set the owning side to null (unless already changed)
-            if ($facture->getPeriodeId() === $this) {
-                $facture->setPeriodeId(null);
+            if ($facture->getPeriode() === $this) {
+                $facture->setPeriode(null);
             }
         }
 

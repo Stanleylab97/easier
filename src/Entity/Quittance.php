@@ -34,9 +34,14 @@ class Quittance
 
     /**
      * @ORM\OneToOne(targetEntity=Facture::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $factureId;
+    private $facture;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $numQuittance;
 
     public function getId(): ?int
     {
@@ -79,14 +84,26 @@ class Quittance
         return $this;
     }
 
-    public function getFactureId(): ?Facture
+    public function getFacture(): ?Facture
     {
-        return $this->factureId;
+        return $this->facture;
     }
 
-    public function setFactureId(Facture $factureId): self
+    public function setFactureId(Facture $facture): self
     {
-        $this->factureId = $factureId;
+        $this->facture = $facture;
+
+        return $this;
+    }
+
+    public function getNumQuittance(): ?string
+    {
+        return $this->numQuittance;
+    }
+
+    public function setNumQuittance(string $numQuittance): self
+    {
+        $this->numQuittance = $numQuittance;
 
         return $this;
     }

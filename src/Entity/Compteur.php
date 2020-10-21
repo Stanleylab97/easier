@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\CompteurRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CompteurRepository::class)
+ * @ApiResource()
  */
 class Compteur
 {
@@ -49,6 +51,12 @@ class Compteur
      * @ORM\OneToMany(targetEntity=Facture::class, mappedBy="compteurId")
      */
     private $factures;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Abonne::class, inversedBy="compteurs")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $abonne;
 
     public function __construct()
     {
@@ -132,7 +140,7 @@ class Compteur
     {
         if (!$this->factures->contains($facture)) {
             $this->factures[] = $facture;
-            $facture->setCompteurId($this);
+            $facture->setCompteur($this);
         }
 
         return $this;
@@ -143,10 +151,22 @@ class Compteur
         if ($this->factures->contains($facture)) {
             $this->factures->removeElement($facture);
             // set the owning side to null (unless already changed)
-            if ($facture->getCompteurId() === $this) {
-                $facture->setCompteurId(null);
+            if ($facture->getCompteur() === $this) {
+                $facture->setCompteur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAbonne(): ?Abonne
+    {
+        return $this->abonne;
+    }
+
+    public function setAbonne(?Abonne $abonne): self
+    {
+        $this->abonne = $abonne;
 
         return $this;
     }

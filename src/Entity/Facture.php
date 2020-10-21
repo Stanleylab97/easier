@@ -47,13 +47,13 @@ class Facture
      * @ORM\ManyToOne(targetEntity=Periode::class, inversedBy="factures")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $periodeId;
+    private $periode;
 
     /**
      * @ORM\ManyToOne(targetEntity=Compteur::class, inversedBy="factures")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $compteurId;
+    private $compteur;
 
     public function getId(): ?int
     {
@@ -120,26 +120,26 @@ class Facture
         return $this;
     }
 
-    public function getPeriodeId(): ?Periode
+    public function getPeriode(): ?Periode
     {
-        return $this->periodeId;
+        return $this->periode;
     }
 
-    public function setPeriodeId(?Periode $periodeId): self
+    public function setPeriode(?Periode $periode): self
     {
-        $this->periodeId = $periodeId;
+        $this->periode = $periode;
 
         return $this;
     }
 
-    public function getCompteurId(): ?Compteur
+    public function getCompteur(): ?Compteur
     {
-        return $this->compteurId;
+        return $this->compteur;
     }
 
-    public function setCompteurId(?Compteur $compteurId): self
+    public function setCompteur(?Compteur $compteur): self
     {
-        $this->compteurId = $compteurId;
+        $this->compteur = $compteur;
 
         return $this;
     }

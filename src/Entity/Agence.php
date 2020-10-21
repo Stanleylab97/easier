@@ -97,7 +97,7 @@ class Agence
     {
         if (!$this->bordereaux->contains($bordereaux)) {
             $this->bordereaux[] = $bordereaux;
-            $bordereaux->setAgenceId($this);
+            $bordereaux->setAgence($this);
         }
 
         return $this;
@@ -108,8 +108,8 @@ class Agence
         if ($this->bordereaux->contains($bordereaux)) {
             $this->bordereaux->removeElement($bordereaux);
             // set the owning side to null (unless already changed)
-            if ($bordereaux->getAgenceId() === $this) {
-                $bordereaux->setAgenceId(null);
+            if ($bordereaux->getAgence() === $this) {
+                $bordereaux->setAgence(null);
             }
         }
 

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AbonneRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,6 +44,16 @@ class Abonne
      * @ORM\JoinColumn(nullable=false)
      */
     private $categorie;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Compteur::class, mappedBy="abonne")
+     */
+    private $compteurs;
+
+    public function __construct()
+    {
+        $this->compteurs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,6 +116,37 @@ class Abonne
     public function setCategorie(?Categorie $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Compteur[]
+     */
+    public function getCompteurs(): Collection
+    {
+        return $this->compteurs;
+    }
+
+    public function addCompteur(Compteur $compteur): self
+    {
+        if (!$this->compteurs->contains($compteur)) {
+            $this->compteurs[] = $compteur;
+            $compteur->setAbonne($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCompteur(Compteur $compteur): self
+    {
+        if ($this->compteurs->contains($compteur)) {
+            $this->compteurs->removeElement($compteur);
+            // set the owning side to null (unless already changed)
+            if ($compteur->getAbonne() === $this) {
+                $compteur->setAbonne(null);
+            }
+        }
 
         return $this;
     }
