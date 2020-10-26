@@ -4,9 +4,17 @@ namespace App\Entity;
 
 use App\Repository\QuittanceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * @ORM\Entity(repositoryClass=QuittanceRepository::class)
+ * @ApiResource(
+ * normalizationContext={"groups"={"quittance"}},
+ * collectionOperations={"post","get"},
+ * itemOperations={"get"}
+ *)
  */
 class Quittance
 {
@@ -19,16 +27,19 @@ class Quittance
 
     /**
      * @ORM\Column(type="datetime")
+     * Groups({"quittance"})
      */
     private $dateReglement;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * Groups({"quittance"})
      */
     private $moyen;
 
     /**
      * @ORM\Column(type="bigint")
+     * Groups({"quittance"})
      */
     private $transactionId;
 
@@ -40,6 +51,7 @@ class Quittance
 
     /**
      * @ORM\Column(type="string", length=255)
+     * Groups({"quittance"})
      */
     private $numQuittance;
 

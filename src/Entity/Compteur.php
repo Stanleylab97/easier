@@ -7,10 +7,15 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CompteurRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ * normalizationContext={"groups"={"read:compteurDetails"}},
+ * collectionOperations={"get"},
+ * itemOperations={"get"}
+ * )
  */
 class Compteur
 {
@@ -18,11 +23,13 @@ class Compteur
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * Groups({"read:compteurDetails"}) 
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * Groups({"read:compteurDetails"})
      */
     private $numPolice;
 
@@ -39,22 +46,22 @@ class Compteur
 
     /**
      * @ORM\Column(type="string", length=255)
+     * Groups({"read:compteurDetails"})
      */
     private $carre;
 
-    /**
-     * @ORM\Column(type="string", length=4)
-     */
-    private $tarif;
+   
 
     /**
      * @ORM\OneToMany(targetEntity=Facture::class, mappedBy="compteurId")
+     * Groups({"read:compteurDetails"})
      */
     private $factures;
 
     /**
      * @ORM\ManyToOne(targetEntity=Abonne::class, inversedBy="compteurs")
      * @ORM\JoinColumn(nullable=false)
+    
      */
     private $abonne;
 
@@ -112,18 +119,6 @@ class Compteur
     public function setCarre(string $carre): self
     {
         $this->carre = $carre;
-
-        return $this;
-    }
-
-    public function getTarif(): ?string
-    {
-        return $this->tarif;
-    }
-
-    public function setTarif(string $tarif): self
-    {
-        $this->tarif = $tarif;
 
         return $this;
     }

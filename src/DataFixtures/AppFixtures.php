@@ -121,17 +121,16 @@ class AppFixtures extends Fixture
 
         for ($i = 0; $i < 6; $i++) {
             $bordereau = new Bordereau();
-            $bordereau->setLibelle(''.$i);
+            $bordereau->setLibelle(''.$i+1);
             $bordereau->setQuartier($faker->city);
             $i%2?$bordereau->setAgence($agence1):$bordereau->setAgence($agence2);
             $manager->persist($bordereau);
             $manager->flush();
             
-            for($i=0;$i<2;$i++){
+            for($i=0;$i<3;$i++){
                 $compteur=new Compteur();
-                $compteur->setNumPolice('');
+                $compteur->setNumPolice('GH'.$faker->randomNumber(5, $strict = false));
                 $compteur->setPuissance(10);
-                $compteur->setTarif(120);
                 $compteur->setCarre($faker->address);
                 $compteur->setBordereau($bordereau);
                 $compteur->setAbonne($abonne1);
@@ -157,6 +156,7 @@ class AppFixtures extends Fixture
                     $facture->setMontantFact($faker->randomNumber(5));
                     $facture->setPeriode($period1); 
                     $facture->setCompteur($compteur);
+                    $facture->setTarif("B09");
                     $manager->persist($facture);
                     $manager->flush();
                     if($i>=14){
@@ -175,7 +175,6 @@ class AppFixtures extends Fixture
                 $compteur=new Compteur();
                 $compteur->setNumPolice('GD'.$faker->randomNumber(5, $strict = false));
                 $compteur->setPuissance(10);
-                $compteur->setTarif(120);
                 $compteur->setCarre($faker->address);
                 $compteur->setBordereau($bordereau);
                 $compteur->setAbonne($abonne2); 
@@ -200,6 +199,7 @@ class AppFixtures extends Fixture
                     $facture->setMontantFact($faker->randomNumber(5));
                     $facture->setPeriode($period2); 
                     $facture->setCompteur($compteur);
+                    $facture->setTarif("BT1");
                     $manager->persist($facture);
                     $manager->flush();
                     if($i>=14){
@@ -217,9 +217,8 @@ class AppFixtures extends Fixture
            
             for($i=0;$i<2;$i++){
                 $compteur=new Compteur();
-                $compteur->setNumPolice(''.$faker->randomNumber(5, $strict = false));
+                $compteur->setNumPolice('GD'.$faker->randomNumber(5, $strict = false));
                 $compteur->setPuissance(15);
-                $compteur->setTarif(170);
                 $compteur->setCarre($faker->address);
                 $compteur->setBordereau($bordereau);
                 $compteur->setAbonne($abonne3); 
@@ -245,6 +244,7 @@ class AppFixtures extends Fixture
                     $facture->setMontantFact($faker->randomNumber(5));
                     $facture->setPeriode($period3); 
                     $facture->setCompteur($compteur);
+                    $facture->setTarif("BT2");
                     $manager->persist($facture);
                     $manager->flush();
                     if($i>=14){
@@ -263,9 +263,8 @@ class AppFixtures extends Fixture
             }
             for($i=0;$i<10;$i++){
                 $compteur=new Compteur();
-                $compteur->setNumPolice(''.$faker->randomNumber(5, $strict = false));
+                $compteur->setNumPolice('GH'.$faker->randomNumber(5, $strict = false));
                 $compteur->setPuissance(5);
-                $compteur->setTarif(115);
                 $compteur->setCarre($faker->address);
                 $compteur->setBordereau($bordereau);
                 $compteur->setAbonne($abonne4); 
@@ -289,6 +288,7 @@ class AppFixtures extends Fixture
                     $facture->setNbkwh($max-$min);
                     $facture->setMontantFact($faker->randomNumber(5));
                     $facture->setPeriode($period4); 
+                    $facture->setTarif("BT3");
                     $facture->setCompteur($compteur);
                     $manager->persist($facture);
                     $manager->flush();
@@ -307,7 +307,7 @@ class AppFixtures extends Fixture
        
         }
 
-        $manager->flush();
+      
 
        
 

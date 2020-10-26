@@ -4,10 +4,16 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\FactureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * @ORM\Entity(repositoryClass=FactureRepository::class)
- * @ApiResource()
+ * @ApiResource(
+ * normalizationContext={"groups"={"read:FactureDetails"}},
+ * collectionOperations={"get"},
+ * itemOperations={"get"}
+ * )
  */
 class Facture
 {
@@ -20,32 +26,38 @@ class Facture
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:FactureDetails","read:compteurDetails"})
      */
     private $numFact;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"read:FactureDetails"})
      */
     private $lastIndex;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"read:FactureDetails"})
      */
     private $newIndex;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"read:FactureDetails"})
      */
     private $nbkwh;
 
     /**
      * @ORM\Column(type="bigint")
+     * @Groups({"read:FactureDetails"})
      */
     private $montantFact;
 
     /**
      * @ORM\ManyToOne(targetEntity=Periode::class, inversedBy="factures")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read:FactureDetails"})
      */
     private $periode;
 
@@ -54,6 +66,11 @@ class Facture
      * @ORM\JoinColumn(nullable=false)
      */
     private $compteur;
+
+    /**
+     * @ORM\Column(type="string", length=4)
+     */
+    private $tarif;
 
     public function getId(): ?int
     {
@@ -140,6 +157,18 @@ class Facture
     public function setCompteur(?Compteur $compteur): self
     {
         $this->compteur = $compteur;
+
+        return $this;
+    }
+
+    public function getTarif(): ?string
+    {
+        return $this->tarif;
+    }
+
+    public function setTarif(string $tarif): self
+    {
+        $this->tarif = $tarif;
 
         return $this;
     }
