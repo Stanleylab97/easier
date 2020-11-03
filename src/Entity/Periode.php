@@ -33,13 +33,13 @@ class Periode
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:FactureDetails"})
+     * @Groups({"read:compteurDetails","read:FactureDetails"})
      */
     private $periodFact;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups({"read:FactureDetails"})
+     * @Groups({"read:compteurDetails","read:FactureDetails"})
      */
     private $dateEcheance;
 

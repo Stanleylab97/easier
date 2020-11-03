@@ -6,7 +6,6 @@ use App\Repository\AgenceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 
 /**
@@ -41,9 +40,27 @@ class Agence
      */
     private $bordereaux;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Direction::class, inversedBy="agences")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $direction;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Zone::class, mappedBy="agence", orphanRemoval=true)
+     */
+    private $zones;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Guichet::class, mappedBy="agence")
+     */
+    private $guichets;
+
     public function __construct()
     {
         $this->bordereaux = new ArrayCollection();
+        $this->zones = new ArrayCollection();
+        $this->guichets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -112,6 +129,80 @@ class Agence
             // set the owning side to null (unless already changed)
             if ($bordereaux->getAgence() === $this) {
                 $bordereaux->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDirection(): ?Direction
+    {
+        return $this->direction;
+    }
+
+    public function setDirection(?Direction $direction): self
+    {
+        $this->direction = $direction;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Zone[]
+     */
+    public function getZones(): Collection
+    {
+        return $this->zones;
+    }
+
+    public function addZone(Zone $zone): self
+    {
+        if (!$this->zones->contains($zone)) {
+            $this->zones[] = $zone;
+            $zone->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeZone(Zone $zone): self
+    {
+        if ($this->zones->contains($zone)) {
+            $this->zones->removeElement($zone);
+            // set the owning side to null (unless already changed)
+            if ($zone->getAgence() === $this) {
+                $zone->setAgence(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Guichet[]
+     */
+    public function getGuichets(): Collection
+    {
+        return $this->guichets;
+    }
+
+    public function addGuichet(Guichet $guichet): self
+    {
+        if (!$this->guichets->contains($guichet)) {
+            $this->guichets[] = $guichet;
+            $guichet->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGuichet(Guichet $guichet): self
+    {
+        if ($this->guichets->contains($guichet)) {
+            $this->guichets->removeElement($guichet);
+            // set the owning side to null (unless already changed)
+            if ($guichet->getAgence() === $this) {
+                $guichet->setAgence(null);
             }
         }
 

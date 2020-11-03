@@ -2,19 +2,22 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CompteurRepository;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * @ORM\Entity(repositoryClass=CompteurRepository::class)
  * @ApiResource(
- * normalizationContext={"groups"={"read:compteurDetails"}},
+ * normalizationContext={"groups"={"read:compteurDetails"},
+ * "enable_max_depth"=true},
  * collectionOperations={"get"},
- * itemOperations={"get"}
+ * itemOperations={"get"},
  * )
  */
 class Compteur
@@ -22,14 +25,15 @@ class Compteur
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
+     * @ApiProperty(identifier=false)
      * @ORM\Column(type="integer")
-     * Groups({"read:compteurDetails"}) 
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * Groups({"read:compteurDetails"})
+     * @Groups({"read:compteurDetails", "read:FactureDetails"})
+     * @ApiProperty(identifier=true)
      */
     private $numPolice;
 
@@ -46,7 +50,7 @@ class Compteur
 
     /**
      * @ORM\Column(type="string", length=255)
-     * Groups({"read:compteurDetails"})
+     * @Groups({"read:compteurDetails", "read:FactureDetails"})
      */
     private $carre;
 
@@ -54,14 +58,13 @@ class Compteur
 
     /**
      * @ORM\OneToMany(targetEntity=Facture::class, mappedBy="compteurId")
-     * Groups({"read:compteurDetails"})
      */
     private $factures;
 
     /**
      * @ORM\ManyToOne(targetEntity=Abonne::class, inversedBy="compteurs")
      * @ORM\JoinColumn(nullable=false)
-    
+     *  @Groups({"read:compteurDetails", "read:FactureDetails"})
      */
     private $abonne;
 

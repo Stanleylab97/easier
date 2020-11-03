@@ -26,20 +26,26 @@ class Quittance
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"quittance"})
+     */
+    private $numQuittance;
+
+    /**
      * @ORM\Column(type="datetime")
-     * Groups({"quittance"})
+     * @Groups({"quittance"})
      */
     private $dateReglement;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * Groups({"quittance"})
+     * @Groups({"quittance"})
      */
     private $moyen;
 
     /**
      * @ORM\Column(type="bigint")
-     * Groups({"quittance"})
+     * @Groups({"quittance"})
      */
     private $transactionId;
 
@@ -50,10 +56,12 @@ class Quittance
     private $facture;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * Groups({"quittance"})
+     * @ORM\ManyToOne(targetEntity=Guichet::class, inversedBy="quittances")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $numQuittance;
+    private $guichet;
+
+    
 
     public function getId(): ?int
     {
@@ -116,6 +124,18 @@ class Quittance
     public function setNumQuittance(string $numQuittance): self
     {
         $this->numQuittance = $numQuittance;
+
+        return $this;
+    }
+
+    public function getGuichet(): ?Guichet
+    {
+        return $this->guichet;
+    }
+
+    public function setGuichet(?Guichet $guichet): self
+    {
+        $this->guichet = $guichet;
 
         return $this;
     }

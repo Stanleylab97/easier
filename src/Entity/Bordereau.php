@@ -36,11 +36,12 @@ class Bordereau
      */
     private $compteurs;
 
+
     /**
-     * @ORM\ManyToOne(targetEntity=Agence::class, inversedBy="bordereaux")
+     * @ORM\ManyToOne(targetEntity=Zone::class, inversedBy="bordereaux")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $agence;
+    private $zone;
 
     public function __construct()
     {
@@ -107,14 +108,14 @@ class Bordereau
         return $this;
     }
 
-    public function getAgence(): ?Agence
+    public function getZone(): ?Zone
     {
-        return $this->agence;
+        return $this->zone;
     }
 
-    public function setAgence(?Agence $agence): self
+    public function setZone(?Zone $zone): self
     {
-        $this->agence = $agence;
+        $this->zone = $zone;
 
         return $this;
     }

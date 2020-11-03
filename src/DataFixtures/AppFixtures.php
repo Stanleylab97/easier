@@ -2,17 +2,20 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
-use App\Entity\Bordereau;
 use Faker;
-use App\Entity\Agence;
-use App\Entity\Categorie;
+use App\Entity\Zone;
 use App\Entity\Abonne;
-use App\Entity\Compteur;
+use App\Entity\Agence;
 use App\Entity\Facture;
+use App\Entity\Guichet;
 use App\Entity\Periode;
+use App\Entity\Compteur;
+use App\Entity\Bordereau;
+use App\Entity\Categorie;
+use App\Entity\Direction;
 use App\Entity\Quittance;
+use Doctrine\Persistence\ObjectManager;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class AppFixtures extends Fixture
 {
@@ -20,19 +23,81 @@ class AppFixtures extends Fixture
     {
         $faker = Faker\Factory::create('fr_FR');
 
+        $direction1=new Direction();
+        $direction1->setCode("DRA");
+        $direction1->setLibelle("Direction Régionale Atlantique");
+        $manager->persist($direction1);
+        $manager->flush();
+
+        $direction2=new Direction();
+        $direction2->setCode("DRL");
+        $direction2->setLibelle("Direction Régionale Littoral");
+        $manager->persist($direction2);
+        $manager->flush();
+
+        $direction3=new Direction();
+        $direction3->setCode("DG");
+        $direction3->setLibelle("Direction Générale");
+        $manager->persist($direction3);
+        $manager->flush();
+       
+        $agence0 = new Agence();
+        $agence0->setLibelle("Agence Mobile Money");
+        $agence0->setLon(3.62098);
+        $agence0->setLat(2.11548);
+        $agence0->setDirection($direction3);
+        $manager->persist($agence0);
+        $manager->flush();
+
         $agence1 = new Agence();
         $agence1->setLibelle("Agence Ganhi");
         $agence1->setLon(4.82098);
         $agence1->setLat(2.91748);
+        $agence1->setDirection($direction2);
         $manager->persist($agence1);
         $manager->flush();
 
+        
+
         $agence2 = new Agence();
-        $agence2->setLibelle("Agence Cité Houéyiho");
+        $agence2->setLibelle("Agence Godomey");
         $agence2->setLon(2.7187);
         $agence2->setLat(6.2548);
+        $agence2->setDirection($direction1);
         $manager->persist($agence2);
         $manager->flush();
+
+        $guichet1=new Guichet();
+        $guichet1->setAgence($agence1);
+        $guichet1->setNumero(1);
+        $manager->persist($guichet1);
+        $manager->flush();
+
+        $guichet2=new Guichet();
+        $guichet2->setAgence($agence2);
+        $guichet2->setNumero(1);
+        $manager->persist($guichet2);
+        $manager->flush();
+
+        $guichet3=new Guichet();
+        $guichet3->setAgence($agence0);
+        $guichet3->setNumero(1);
+        $manager->persist($guichet3);
+        $manager->flush();
+
+
+        $zone1=new Zone();
+        $zone1->setSigle("GD");
+        $zone1->setLibelle("Godomey");
+        $zone1->setAgence($agence2);
+        $manager->persist($zone1);
+
+        $zone2=new Zone();
+        $zone2->setSigle("AK");
+        $zone2->setLibelle("AKPAKPA");
+        $zone2->setAgence($agence1);
+        $manager->persist($zone2);
+       
 
         $categorie1=new Categorie();
         $categorie1->setCode("01");
@@ -123,7 +188,7 @@ class AppFixtures extends Fixture
             $bordereau = new Bordereau();
             $bordereau->setLibelle(''.$i+1);
             $bordereau->setQuartier($faker->city);
-            $i%2?$bordereau->setAgence($agence1):$bordereau->setAgence($agence2);
+            $i%2?$bordereau->setZone($zone2):$bordereau->setZone($zone1);
             $manager->persist($bordereau);
             $manager->flush();
             
@@ -166,6 +231,7 @@ class AppFixtures extends Fixture
                         $quittance->setNumQuittance("Q".$faker->randomNumber(8, $strict = false));
                         $quittance->setFactureId($facture);
                         $quittance->setTransactionId("NULL");
+                        $quittance->setGuichet($guichet1);
                         $manager->persist($quittance);
                         $manager->flush();
                     }
@@ -209,6 +275,7 @@ class AppFixtures extends Fixture
                         $quittance->setNumQuittance("Q".$faker->randomNumber(8, $strict = false));
                         $quittance->setFactureId($facture);
                         $quittance->setTransactionId("NULL");
+                        $quittance->setGuichet($guichet2);
                         $manager->persist($quittance);
                         $manager->flush();
                     }
@@ -254,6 +321,7 @@ class AppFixtures extends Fixture
                         $quittance->setNumQuittance("Q".$faker->randomNumber(8, $strict = false));
                         $quittance->setFactureId($facture);
                         $quittance->setTransactionId($faker->uuid);
+                        $quittance->setGuichet($guichet3);
                         $manager->persist($quittance);
                         $manager->flush();
                     }
@@ -299,6 +367,7 @@ class AppFixtures extends Fixture
                     $quittance->setNumQuittance("Q".$faker->randomNumber(8, $strict = false));
                     $quittance->setFactureId($facture);
                     $quittance->setTransactionId($faker->uuid);
+                    $quittance->setGuichet($guichet3);
                     $manager->persist($quittance);
                     $manager->flush();
                 }

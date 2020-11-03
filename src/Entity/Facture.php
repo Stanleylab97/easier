@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Entity;
-use ApiPlatform\Core\Annotation\ApiResource;
-use App\Repository\FactureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\FactureRepository;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
@@ -20,50 +21,53 @@ class Facture
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
+     * @ApiProperty(identifier=false)
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:FactureDetails","read:compteurDetails"})
+     * @ApiProperty(identifier=true)
+     * @Groups({"read:compteurDetails", "read:FactureDetails"})
      */
     private $numFact;
 
     /**
-     * @ORM\Column(type="integer")
-     * @Groups({"read:FactureDetails"})
-     */
+     * @ORM\Column(type="integer",unique=true)
+     * @Groups({"read:compteurDetails", "read:FactureDetails"}) 
+     */    
     private $lastIndex;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"read:FactureDetails"})
+     * @Groups({"read:compteurDetails", "read:FactureDetails"})
      */
     private $newIndex;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"read:FactureDetails"})
+     * @Groups({"read:compteurDetails", "read:FactureDetails"})
      */
     private $nbkwh;
 
     /**
      * @ORM\Column(type="bigint")
-     * @Groups({"read:FactureDetails"})
+     *  @Groups({"read:compteurDetails", "read:FactureDetails"})
      */
     private $montantFact;
 
     /**
      * @ORM\ManyToOne(targetEntity=Periode::class, inversedBy="factures")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"read:FactureDetails"})
+     * @Groups({"read:compteurDetails", "read:FactureDetails"})
      */
     private $periode;
 
     /**
      * @ORM\ManyToOne(targetEntity=Compteur::class, inversedBy="factures")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read:FactureDetails"})
      */
     private $compteur;
 

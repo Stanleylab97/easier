@@ -22,27 +22,32 @@ class Abonne
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:compteurDetails", "read:FactureDetails"})
      */
     private $numAbonne;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Groups({"read:compteurDetails", "read:FactureDetails"})
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Groups({"read:compteurDetails", "read:FactureDetails"})
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Groups({"read:compteurDetails", "read:FactureDetails"})
      */
     private $tel;
 
     /**
      * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="abonnes")
      * @ORM\JoinColumn(nullable=false)
+     *  @Groups({"read:compteurDetails", "read:FactureDetails"})
      */
     private $categorie;
 
