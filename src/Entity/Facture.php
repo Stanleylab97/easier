@@ -52,7 +52,7 @@ class Facture
     private $nbkwh;
 
     /**
-     * @ORM\Column(type="bigint")
+     * @ORM\Column(type="integer")
      *  @Groups({"read:compteurDetails", "read:FactureDetails"})
      */
     private $montantFact;
