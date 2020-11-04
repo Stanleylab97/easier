@@ -8,7 +8,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Facture;
 use Doctrine\ORM\QueryBuilder;
 
-class FilterUnpaidBillQueryExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
+/* class FilterUnpaidBillQueryExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
     public function applyToCollection(QueryBuilder $qb, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null)
     {
@@ -23,4 +23,4 @@ class FilterUnpaidBillQueryExtension implements QueryCollectionExtensionInterfac
             $qb->andWhere(sprintf("%s.state = 'published'", $qb->getRootAliases()[0]));
         }
     }
-}
+} */
