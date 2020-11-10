@@ -34,7 +34,7 @@ class Facture
     private $numFact;
 
     /**
-     * @ORM\Column(type="integer",unique=true)
+     * @ORM\Column(type="integer")
      * @Groups({"read:compteurDetails", "read:FactureDetails"}) 
      */    
     private $lastIndex;

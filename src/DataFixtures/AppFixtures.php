@@ -347,9 +347,9 @@ class AppFixtures extends Fixture
                         $facture->setLastIndex($min);
                         $facture->setNewIndex($max);
                     }else{
-                        $x=$max;
-                        $min=$x;
-                        $max=$min;
+                        $x=$min;
+                        $min=$max;
+                        $max=$x;
                         $facture->setLastIndex($min);
                         $facture->setNewIndex($max);
                     }
